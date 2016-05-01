@@ -1,0 +1,34 @@
+{
+  "name": "ava-test-generator",
+  "version": "1.0.0",
+  "description": "generate test boilerplate for ava from file",
+  "main": "index.js",
+  "dependencies": {
+    "camelcase": "^2.1.1",
+    "recast": "^0.11.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conorhastings/ava-test-generator.git"
+  },
+  "keywords": [
+    "ava",
+    "tests",
+    "tape",
+    "unittest",
+    "automated-testing",
+    "static",
+    "analysis",
+    "static-analysis"
+  ],
+  "author": "Conor Hastings",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/conorhastings/ava-test-generator/issues"
+  },
+  "homepage": "https://github.com/conorhastings/ava-test-generator#readme"
+}
