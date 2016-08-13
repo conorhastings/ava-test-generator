@@ -5,8 +5,17 @@ const recast = require('recast');
 const path = require('path');
 const camel = require('camelcase');
 
-function findReturnPath(body) {
-  
+function findReturnPath(body, args) {
+  if (type === "IfStatement") {
+    const testName = body.test.name;
+    if (body.test.type === "Identifier" && args.indexOf(testName) !== -1) {
+
+    }
+  }
+}
+
+function generateImport(name, file, isDefault) {
+  return `import ${isDefault ? name : `{${name}}`} from ${path.join(__dirname, file)}`;
 }
 
 function generateAvaTest(file) {
@@ -14,12 +23,13 @@ function generateAvaTest(file) {
     if (err) {
       process.exit(1);
     }
-    let tests = [`import test from 'ava'`];
+    let imports = [`import test from 'ava'`];
+    let tests = [];
     const codeBody = recast.parse(code).program.body;
     codeBody.forEach(segment => {
       if (segment.type === 'ExportDefaultDeclaration' && segment.declaration.type === 'FunctionDeclaration') {
         let name;
-        const params = segment.declaration.params.map(param => param.name);
+        const args = segment.declaration.params.map(param => param.name);
         if (segment.declaration.id === null) {
           name = camel(file.split('.js')[0]);
         }
@@ -28,16 +38,16 @@ function generateAvaTest(file) {
         }
         if (segment.declaration.body.body.length) {
           segment.declaration.body.body.forEach(seg => {
-            console.log(seg);
+            const returnTest = findReturnPath(seg, args);
           });
         }
-        tests.push(`import ${name} from ${path.join(__dirname, file)}`)
-        tests.push(`test(/* TODO */, t => { 
-  t.same(${name}(/* TODO */)), /* TODO */);
-});`);
+        imports.push(generateImport(name, file, true));
+//         tests.push(`test(/* TODO */, t => { 
+//   t.same(${name}(/* TODO */)), /* TODO */);
+// });`);
       }
     });
-    // console.log(tests.join('\n\n'));
+    console.log(tests.join('\n\n'));
   });
 }
 
